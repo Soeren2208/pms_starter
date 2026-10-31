@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class TokenForwarding {
 
-
     //Returns the raw JWT of the currently authenticated user.
     public String getToken() {
         SecurityContext context = SecurityContextHolder.getContext();

@@ -30,6 +30,4 @@ public class TokenTest extends AbstractIntegrationTest {
                 .andExpect(jsonPath("title", is("Bearer Token Invalid")));
     }
 
-
-
 }
