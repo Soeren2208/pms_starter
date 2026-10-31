@@ -10,7 +10,7 @@ import static org.hamcrest.Matchers.is;
 
 public class TokenTest extends AbstractIntegrationTest {
 
-    //Test für wenn kein Token übergeben wurde
+    //Check to see if no token was passed
     @Test
     void WithNoToken()  throws Exception {
         mockMvc.perform(get("/projects"))
@@ -20,7 +20,7 @@ public class TokenTest extends AbstractIntegrationTest {
 
     }
 
-    //Test für wenn ein Invalid Token übergeben wurde
+    //Check to see if an invalid token was passed
     @Test
     void WithInvalidToken() throws Exception {
         mockMvc.perform(get("/projects")

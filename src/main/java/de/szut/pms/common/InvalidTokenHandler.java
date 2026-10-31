@@ -29,30 +29,28 @@ public class InvalidTokenHandler implements AuthenticationEntryPoint {
     @Override
     public void commence(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull AuthenticationException authException) throws IOException, ServletException {
 
-        //Erstellt das ProblemDetail
+        //Creates the ProblemDetail
         ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, "The request was unauthorized, please check your credentials");
 
-        //Differenziert zwischen Token ist nicht vorhanden und token is invalid
+        //Distinguishes between “token is missing” and “token is invalid”
         if(authException instanceof InvalidBearerTokenException) {
             problem.setTitle("Bearer Token Invalid");
 
         }else{
             problem.setTitle("No token is provided");
         }
-        //Setzt den Fehlerstatus
+        //Sets the error status
         response.setStatus(401);
-
-        //
         response.setContentType("application/problem+json");
 
-        //Loged die Fehlermeldung
+        //Logs the error message
         log.info(authException.getClass().getSimpleName());
         log.info(problem.toString());
 
-        //
-        response.setCharacterEncoding("UTF-8"); //Damit es mit umlauten funktioniert
-        response.getWriter().print(objectMapper.writeValueAsString(problem)); //SChreibt das Fehler an den Client
-
+        //To make it work with umlauts
+        response.setCharacterEncoding("UTF-8");
+        //Writes the error to the client
+        response.getWriter().print(objectMapper.writeValueAsString(problem));
 
     }
 }

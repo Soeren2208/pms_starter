@@ -32,7 +32,7 @@ public class AuthentikSecurityConfig {
     @Value("${authentik.jwk-set-uri}")
     private String jwkSetUri;
 
-    private final InvalidTokenHandler tokenInvalidException; //Verständle Fehlermeldung bei Falscher Anmeldung
+    private final InvalidTokenHandler tokenInvalidException; //Clear error message when logging in incorrectly
 
     @Bean
     public JwtDecoder jwtDecoder() {
@@ -61,7 +61,7 @@ public class AuthentikSecurityConfig {
                         .requestMatchers("/swagger-ui/**").permitAll()
                         .requestMatchers("/swagger-config/**").permitAll()
                         .requestMatchers("/v3/api-docs/**").permitAll()
-                        .anyRequest().authenticated() //Verhindert das vergessene Endpunkte zugänglich sind
+                        .anyRequest().authenticated() //Prevents forgotten endpoints from being accessible
                 );
 
         return http.build();
