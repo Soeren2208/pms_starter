@@ -39,4 +39,21 @@ public class ProjectMapper {
     }
 
     public Project toEntity(ProjectDTO dto) {return new Project();}
+
+
+
+
+
+    public ProjectEmployeeRemoveDTO toRemoveEmployeeDTO(Project entity){
+        ProjectEmployeeRemoveDTO dto = new ProjectEmployeeRemoveDTO();
+        dto.setId(entity.getId());
+        dto.setDescription(entity.getDescription());
+
+        List<ProjectEmployeeDTO> dtos = new ArrayList<>();
+        for (ProjectEmployee employee : entity.getEmployee()) {
+            dtos.add(projectEmployeeMapper.toDTO(employee));
+        }
+        dto.setProjectEmployees(dtos);
+        return dto;
+    }
 }
