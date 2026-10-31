@@ -87,6 +87,7 @@ public class ProjectService {
         return projectEmployeeMapper.toDto(saved);
     }
 
+    @Transactional(readOnly = true)
     public ProjectDto findById(Long id) {
         Project project = projectRepository.findById(id)
                 .orElseThrow(() -> new ProjectNotFoundException(id));

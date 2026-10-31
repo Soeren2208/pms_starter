@@ -56,6 +56,12 @@ public class ProjectController {
         return ResponseEntity.ok(service.findAll());
     }
 
+    /**
+     * Retrieves a project by its ID
+     *
+     * @param id the identifier of the project
+     * @return the requested project
+     */
     @GetMapping("/{id}")
     public ResponseEntity<ProjectDto> getById(
             @PathVariable Long id) {
