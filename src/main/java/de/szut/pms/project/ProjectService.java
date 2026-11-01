@@ -93,10 +93,20 @@ public class ProjectService {
     @Transactional(readOnly = true)
     public List<ProjectDto> findAll() {
         return projectRepository.findAll().stream()
-                .map(project -> mapper.toDto(
-                        project
-                ))
-                //projectemployeerepository.countByProjectId(project.getId())))
+                .map(project -> {
+
+                    List<ProjectEmployee> assignments =
+                            projectEmployeeRepository.findByProjectId(
+                                    project.getId());
+
+                    List<EmployeeDto> employees = assignments.stream()
+                            .map(assignment ->
+                                    externalApiClient.getEmployeeById(
+                                            assignment.getEmployeeId()))
+                            .toList();
+
+                    return mapper.toDto(project, employees);
+                })
                 .toList();
     }
 
