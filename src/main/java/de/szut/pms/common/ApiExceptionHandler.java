@@ -3,6 +3,8 @@ package de.szut.pms.common;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import de.szut.pms.common.exceptions.EmployeeAlreadyExistsInProjectException;
+import de.szut.pms.common.exceptions.EmployeeNotFoundException;
 import de.szut.pms.common.exceptions.ProjectAlreadyExistsException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -48,6 +50,23 @@ public class ApiExceptionHandler {
         return problem;
     }
 
+    @ExceptionHandler(EmployeeNotFoundException.class)
+    public ProblemDetail handleEmployeeNotExists(EmployeeNotFoundException ex) {
+        ProblemDetail problem =
+                ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.getMessage());
+        problem.setTitle("Mitarbeitenden-ID existiert nicht.");
+
+        return problem;
+    }
+
+    @ExceptionHandler(EmployeeAlreadyExistsInProjectException.class)
+    public ProblemDetail handleEmployeeAlreadyExistsInProject(EmployeeAlreadyExistsInProjectException ex) {
+        ProblemDetail problem =
+                ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.getMessage());
+        problem.setTitle("Mitarbeiter*in arbeitet bereits am Projekt.");
+
+        return problem;
+    }
 /*
     @ExceptionHandler(HelloNotFoundException.class)
     public ProblemDetail handleNotFound(HelloNotFoundException ex) {

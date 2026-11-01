@@ -2,12 +2,15 @@ package de.szut.pms.project;
 
 import de.szut.pms.client.ExternalApiClient;
 import de.szut.pms.client.EmployeeDto;
+import de.szut.pms.common.exceptions.EmployeeAlreadyExistsInProjectException;
+import de.szut.pms.common.exceptions.EmployeeNotFoundException;
 import de.szut.pms.common.exceptions.ProjectAlreadyExistsException;
 import de.szut.pms.common.exceptions.ProjectNotFoundException;
 import de.szut.pms.projectemployee.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -36,13 +39,23 @@ public class ProjectService {
         }
 
         // prüft ob Lead ID existiert
-        externalApiClient.getEmployeeById(dto.projectLeadId());
+        try {
+            externalApiClient.getEmployeeById(dto.projectLeadId());
+        } catch (Exception e) {
+            throw new EmployeeNotFoundException(dto.projectLeadId());
+        }
+
 
         // prüft ob IDs (falls angegeben) gültig sind
         if (dto.employees() != null) {
             for (CreateProjectEmployeeDto projectEmployeeDto : dto.employees()) {
                 Long id = projectEmployeeDto.employeeId();
-                externalApiClient.getEmployeeById(id);
+
+                try {
+                    externalApiClient.getEmployeeById(id);
+                } catch (Exception e) {
+                    throw new EmployeeNotFoundException(id);
+                }
             }
         }
 
@@ -51,14 +64,23 @@ public class ProjectService {
         );
 
         // baut projectEmployee Objekt
+        List<EmployeeDto> employees = new ArrayList<>();
         if (dto.employees() != null) {
             for (CreateProjectEmployeeDto projectEmployeeDto : dto.employees()) {
+                EmployeeDto employee =
+                        externalApiClient.getEmployeeById(
+                                projectEmployeeDto.employeeId());
+
+                employees.add(employee);
+
                 ProjectEmployee p = new ProjectEmployee();
                 p.setEmployeeId(projectEmployeeDto.employeeId());
                 p.setProject(saved);
                 p.setQualificationID(projectEmployeeDto.qualificationId());
+
                 projectEmployeeRepository.save(p);
             }
+            return mapper.toDto(saved, employees);
         }
 
         return mapper.toDto(saved);
@@ -78,10 +100,28 @@ public class ProjectService {
             Long projectId,
             CreateProjectEmployeeDto dto) {
 
+        ProjectEmployee assignment = new ProjectEmployee();
+
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ProjectNotFoundException(projectId));
 
-        ProjectEmployee assignment = new ProjectEmployee();
+
+        // prüfen ob valide ID des MAs
+        try {
+            externalApiClient.getEmployeeById(dto.employeeId());
+        } catch (Exception e) {
+            throw new EmployeeNotFoundException(dto.employeeId());
+        }
+
+        // TODO prüfen: ist MA schon am Projekt beteiligt
+        if (projectEmployeeRepository.existsByProjectIdAndEmployeeId(
+                projectId,
+                dto.employeeId())) {
+
+            throw new EmployeeAlreadyExistsInProjectException(
+                    dto.employeeId());
+        }
+
 
         assignment.setProject(project);
         assignment.setEmployeeId(dto.employeeId());
