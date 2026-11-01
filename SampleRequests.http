@@ -8,21 +8,27 @@ Content-Type: application/json
 Authorization: Bearer {{bearer_token}}
 
 {
-  "projectName": "string",
+  "projectName": "Test",
   "startDate": "2026-10-28T10:34:42.573Z",
   "endDate": "2026-10-28T10:34:42.573Z",
   "projectLeadId": 1,
-  "customerId": 1,
-  "description": "string"
+  "customerId": 10,
+  "description": "Ein Projekt zum testen",
+  "employees": [
+    {
+      "employeeId": 1,
+      "qualificationId": 2
+    }
+  ]
 }
 
 ### Einen Mitarbeiter zum Projekt hinzufügen
-POST http://localhost:8080/projects/1/employees
+POST http://localhost:8080/projects/2/employees
 Content-Type: application/json
 Authorization: Bearer {{bearer_token}}
 
 {
-  "employeeId": 1,
+  "employeeId": 2,
   "qualificationId": 1
 }
 
