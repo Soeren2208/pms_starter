@@ -2,10 +2,8 @@ package de.szut.pms.project;
 
 import de.szut.pms.client.ExternalApiClient;
 import de.szut.pms.client.EmployeeDto;
-import de.szut.pms.common.exceptions.EmployeeAlreadyExistsInProjectException;
-import de.szut.pms.common.exceptions.EmployeeNotFoundException;
-import de.szut.pms.common.exceptions.ProjectAlreadyExistsException;
-import de.szut.pms.common.exceptions.ProjectNotFoundException;
+import de.szut.pms.common.exceptions.*;
+import de.szut.pms.customer.DummyCustomerClient;
 import de.szut.pms.projectemployee.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,17 +14,19 @@ import java.util.List;
 @Service
 public class ProjectService {
     private final ExternalApiClient externalApiClient;
+    private final DummyCustomerClient dummyCustomerClient;
     private final ProjectRepository projectRepository;
     private final ProjectEmployeeRepository projectEmployeeRepository;
     private final ProjectMapper mapper;
     private final ProjectEmployeeMapper projectEmployeeMapper;
 
 
-    public ProjectService(ProjectRepository projectRepository, ProjectEmployeeRepository projectemployeerepository, ProjectMapper mapper, ExternalApiClient externalApiClient, ProjectEmployeeMapper projectEmployeeMapper) {
+    public ProjectService(ProjectRepository projectRepository, ProjectEmployeeRepository projectemployeerepository, ProjectMapper mapper, ExternalApiClient externalApiClient, DummyCustomerClient dummyCustomerClient, ProjectEmployeeMapper projectEmployeeMapper) {
         this.projectRepository = projectRepository;
         this.projectEmployeeRepository = projectemployeerepository;
         this.mapper = mapper;
         this.externalApiClient = externalApiClient;
+        this.dummyCustomerClient = dummyCustomerClient;
         this.projectEmployeeMapper = projectEmployeeMapper;
     }
 
@@ -38,6 +38,10 @@ public class ProjectService {
             throw new ProjectAlreadyExistsException(dto.projectName(), dto.customerId());
         }
 
+        // prüft CustomerID
+        if(!dummyCustomerClient.existsById(dto.customerId())) {
+            throw new CustomerNotFoundException(dto.customerId());
+        }
         // prüft ob Lead ID existiert
         try {
             externalApiClient.getEmployeeById(dto.projectLeadId());
@@ -113,7 +117,7 @@ public class ProjectService {
             throw new EmployeeNotFoundException(dto.employeeId());
         }
 
-        // TODO prüfen: ist MA schon am Projekt beteiligt
+        // prüfen: ist MA schon am Projekt beteiligt
         if (projectEmployeeRepository.existsByProjectIdAndEmployeeId(
                 projectId,
                 dto.employeeId())) {

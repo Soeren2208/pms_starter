@@ -3,6 +3,7 @@ package de.szut.pms.common;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import de.szut.pms.common.exceptions.CustomerNotFoundException;
 import de.szut.pms.common.exceptions.EmployeeAlreadyExistsInProjectException;
 import de.szut.pms.common.exceptions.EmployeeNotFoundException;
 import de.szut.pms.common.exceptions.ProjectAlreadyExistsException;
@@ -55,6 +56,15 @@ public class ApiExceptionHandler {
         ProblemDetail problem =
                 ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.getMessage());
         problem.setTitle("Mitarbeitenden-ID existiert nicht.");
+
+        return problem;
+    }
+
+    @ExceptionHandler(CustomerNotFoundException.class)
+    public ProblemDetail handleCustomerNotExists(CustomerNotFoundException ex) {
+        ProblemDetail problem =
+                ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.getMessage());
+        problem.setTitle("Kunden-ID existiert nicht.");
 
         return problem;
     }
