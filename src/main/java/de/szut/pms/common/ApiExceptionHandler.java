@@ -7,6 +7,7 @@ import de.szut.pms.common.exceptions.CustomerNotFoundException;
 import de.szut.pms.common.exceptions.EmployeeAlreadyExistsInProjectException;
 import de.szut.pms.common.exceptions.EmployeeNotFoundException;
 import de.szut.pms.common.exceptions.ProjectAlreadyExistsException;
+import de.szut.pms.common.exceptions.ProjectNotFoundException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
@@ -77,6 +78,15 @@ public class ApiExceptionHandler {
 
         return problem;
     }
+
+    @ExceptionHandler(ProjectNotFoundException.class)
+    public ProblemDetail handleNotFound(ProjectNotFoundException ex) {
+        ProblemDetail problem =
+                ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
+        problem.setTitle("Nicht gefunden");
+        return problem;
+    }
+}
 /*
     @ExceptionHandler(HelloNotFoundException.class)
     public ProblemDetail handleNotFound(HelloNotFoundException ex) {
@@ -97,5 +107,6 @@ public class ApiExceptionHandler {
         problem.setTitle("Ungültige Eingabe");
         problem.setProperty("errors", errors);
         return problem;
+    }
+
     }*/
-}
