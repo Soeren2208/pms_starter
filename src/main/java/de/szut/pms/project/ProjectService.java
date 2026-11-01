@@ -15,7 +15,7 @@ public class ProjectService {
     }
 
     @Transactional
-    public ProjectDTO findOne(Long id) {
+    public ProjectDTO findOneByID(Long id) {
         Project project =  repository.findById(id).orElseThrow(() -> new ProjectNotFoundException(id));
         return mapper.toDTO(project);
     }
