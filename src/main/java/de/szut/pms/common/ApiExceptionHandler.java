@@ -3,11 +3,7 @@ package de.szut.pms.common;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import de.szut.pms.common.exceptions.CustomerNotFoundException;
-import de.szut.pms.common.exceptions.EmployeeAlreadyExistsInProjectException;
-import de.szut.pms.common.exceptions.EmployeeNotFoundException;
-import de.szut.pms.common.exceptions.ProjectAlreadyExistsException;
-import de.szut.pms.common.exceptions.ProjectNotFoundException;
+import de.szut.pms.common.exceptions.*;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
@@ -79,11 +75,29 @@ public class ApiExceptionHandler {
         return problem;
     }
 
+    @ExceptionHandler(ProjectPeriodConflictException.class)
+    public ProblemDetail handleEmployeeAlreadyWorkingInOtherProject(ProjectPeriodConflictException ex) {
+        ProblemDetail problem =
+                ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.getMessage());
+        problem.setTitle("Mitarbeiter*in arbeitet bereits an anderem Projekt.");
+
+        return problem;
+    }
+
     @ExceptionHandler(ProjectNotFoundException.class)
     public ProblemDetail handleNotFound(ProjectNotFoundException ex) {
         ProblemDetail problem =
                 ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
         problem.setTitle("Nicht gefunden");
+        return problem;
+    }
+
+    @ExceptionHandler(QualificationNotFoundException.class)
+    public ProblemDetail handleQualificationNotExists(QualificationNotFoundException ex) {
+        ProblemDetail problem =
+                ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.getMessage());
+        problem.setTitle("Qualifikations-ID existiert nicht.");
+
         return problem;
     }
 }
