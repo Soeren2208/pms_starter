@@ -55,6 +55,13 @@ public class EmployeeQualificationService {
     }
 
     /**
+     * Prüft, ob ein Mitarbeiter existiert, ohne eine Qualifikation zu prüfen.
+     */
+    public void validateEmployee(Long employeeId) {
+        employeeClient.findById(employeeId);
+    }
+
+    /**
      * Für das Anlegen eines Projektes
      * @param project welches angelegt werden soll
      */

@@ -43,6 +43,11 @@ public class ProjectService {
             }
         }
 
+        // Prüfen, ob der Projektleiter existiert
+        if (dto.responsibleEmployeeId() != null) {
+            qualificationService.validateEmployee(dto.responsibleEmployeeId());
+        }
+
         // Projekt erstellen und speichern
         Project saved = repository.save(mapper.toEntity(dto));
 
