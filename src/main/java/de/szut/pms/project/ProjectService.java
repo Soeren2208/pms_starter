@@ -1,5 +1,6 @@
 package de.szut.pms.project;
 
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,5 +14,11 @@ public class ProjectService {
         this.mapper = mapper;
     }
 
+
+    @Transactional
+    public ProjectEmployeesDTO findAllEmployeesOfProjectOneByID(Long id) {
+        Project project =  repository.findById(id).orElseThrow(() -> new ProjectNotFoundException(id));
+        return mapper.ProjectEmployeesDTO(project);
+    }
 
 }
