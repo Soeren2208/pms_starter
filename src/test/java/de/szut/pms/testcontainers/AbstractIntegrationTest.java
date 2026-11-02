@@ -35,9 +35,9 @@ public class AbstractIntegrationTest {
 
     @BeforeEach
     void setUp() {
-        helloRepository.deleteAll();
         projectEmployeeRepository.deleteAll();
         projectRepository.deleteAll();
+        helloRepository.deleteAll();
     }
 
 

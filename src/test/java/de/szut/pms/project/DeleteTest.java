@@ -38,4 +38,10 @@ public class DeleteTest extends AbstractIntegrationTest {
         assertThat(projectRepository.findById(project.getId())).isEmpty();
 
     }
+
+    @Test
+    @WithMockUser
+    void deleteProjectWithUnknownProjectIdReturn404() throws Exception {
+        mockMvc.perform(delete("/projects/{id}",  1L).with(csrf())).andExpect(status().isNotFound());
+    }
 }
