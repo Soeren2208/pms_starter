@@ -53,8 +53,7 @@ public record CreateProjectDTO(
                   }
                 ]
                 """)
-        @Valid
-        List<CreateProjectEmployeeDTO> projectEmployees
+        List<@Valid CreateProjectEmployeeDTO> projectEmployees
 
 ) {
 
