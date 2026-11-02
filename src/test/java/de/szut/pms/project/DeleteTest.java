@@ -10,6 +10,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class DeleteTest extends AbstractIntegrationTest {
 
@@ -44,12 +45,11 @@ public class DeleteTest extends AbstractIntegrationTest {
         mockMvc.perform(delete("/projects/{projectId}/employees/{employeeId}",
                                 project.getId(), IdToBeDeleted).with(csrf())).andExpect(status().isOk());
 
-        Project updatedProject = projectRepository.findById(project.getId()).orElseThrow();
+        List<ProjectEmployee> employees = projectEmployeeRepository.findAll();
 
-        assertThat(updatedProject.getEmployee()).hasSize(1);
+        assertThat(employees).hasSize(1);
 
-        assertThat(updatedProject.getEmployee().get(0).getEmployeeId()).isEqualTo(2L);
-
+        assertThat(employees.get(0).getEmployeeId()).isEqualTo(2L);
 
     }
 
