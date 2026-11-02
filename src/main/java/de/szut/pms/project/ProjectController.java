@@ -20,7 +20,7 @@ public class ProjectController {
     @ApiResponse(responseCode = "400", description = "Fehler in der Anfrage, möglich das die ID keine Zahl ist",content = @Content(mediaType = "application/problem+json"))
     @ApiResponse(responseCode = "404", description = "Projekt nicht gefunden",content = @Content(mediaType = "application/problem+json"))
     @GetMapping(value = "{id}/employees", produces = "application/json")
-    public ResponseEntity<ProjectEmployeesDTO> getProject(@PathVariable Long id){
+    public ResponseEntity<ProjectEmployeesDTO> getEmployessFromProject(@PathVariable Long id){
         return ResponseEntity.ok().body(service.findAllEmployeesOfProjectOneByID(id));
     }
 

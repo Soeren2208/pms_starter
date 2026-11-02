@@ -9,8 +9,8 @@ import java.util.List;
 @Setter
 @Getter
 public class ProjectEmployeesDTO {
-    long projectId;
-    String bezeichnung;
+    Long projectId;
+    String description;
     List<ProjectEmployeeDTO> employees;
 
 }

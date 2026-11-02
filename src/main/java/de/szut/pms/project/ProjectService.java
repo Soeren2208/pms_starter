@@ -18,7 +18,7 @@ public class ProjectService {
     @Transactional
     public ProjectEmployeesDTO findAllEmployeesOfProjectOneByID(Long id) {
         Project project =  repository.findById(id).orElseThrow(() -> new ProjectNotFoundException(id));
-        return mapper.ProjectEmployeesDTO(project);
+        return mapper.toProjectEmployeesDTO(project);
     }
 
 }
