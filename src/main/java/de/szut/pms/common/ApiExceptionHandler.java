@@ -3,6 +3,7 @@ package de.szut.pms.common;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import de.szut.pms.project.EmployeeTimeConflictException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import de.szut.pms.hello.HelloNotFoundException;
-import org.springframework.web.client.ResourceAccessException;
 
 /**
  * Zentrale Übersetzung von Ausnahmen in HTTP-Antworten nach RFC 9457
@@ -52,6 +52,14 @@ public class ApiExceptionHandler {
                 HttpStatus.BAD_REQUEST, "Die Anfrage enthält ungültige Felder.");
         problem.setTitle("Ungültige Eingabe");
         problem.setProperty("errors", errors);
+        return problem;
+    }
+
+    @ExceptionHandler(EmployeeTimeConflictException.class)
+    public ProblemDetail handleProjectsEmployeeOverlap(EmployeeTimeConflictException ex) {
+        ProblemDetail problem = ProblemDetail.forStatusAndDetail(
+                HttpStatus.CONFLICT, ex.getMessage());
+        problem.setTitle("Mitarbeiter gleichzeitig in 2 Projekten");
         return problem;
     }
 }
