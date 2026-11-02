@@ -1,5 +1,6 @@
 package de.szut.pms.project;
 
+import de.szut.pms.common.ResourceNotFoundException;
 import de.szut.pms.customer.CustomerClient;
 import de.szut.pms.customer.CustomerNotFoundException;
 import de.szut.pms.employee.EmployeeQualificationService;
@@ -44,9 +45,7 @@ public class ProjectService {
         }
 
         // Prüfen, ob der Projektleiter existiert
-        if (dto.responsibleEmployeeId() != null) {
-            qualificationService.validateEmployee(dto.responsibleEmployeeId());
-        }
+        qualificationService.validateEmployee(dto.responsibleEmployeeId());
 
         // Projekt erstellen und speichern
         Project saved = repository.save(mapper.toEntity(dto));

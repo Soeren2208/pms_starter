@@ -1,10 +1,13 @@
+
 package de.szut.pms.project;
 
+import de.szut.pms.common.ResourceNotFoundException;
 import de.szut.pms.customer.CustomerNotFoundException;
-import de.szut.pms.testcontainers.AbstractIntegrationTest;
 import de.szut.pms.employee.EmployeeClient;
 import de.szut.pms.employee.EmployeeDto;
+import de.szut.pms.employee.EmployeeServiceNotAvailableException;
 import de.szut.pms.employee.SkillDto;
+import de.szut.pms.testcontainers.AbstractIntegrationTest;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,10 +22,10 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.mockito.Mockito.when;
 
 @WithMockUser
 class ProjectControllerIntegrationTest extends AbstractIntegrationTest {
@@ -81,7 +84,6 @@ class ProjectControllerIntegrationTest extends AbstractIntegrationTest {
             }
             """;
 
-
     @Test
     void createProjectSuccessfully() throws Exception {
         long countBefore = projectRepository.count();
@@ -101,6 +103,84 @@ class ProjectControllerIntegrationTest extends AbstractIntegrationTest {
                 .andExpect(jsonPath("$.projectEmployees.length()").value(2));
 
         assertEquals(countBefore + 1, projectRepository.count());
+    }
+
+    @Test
+    void createProjectWithMissingEmployeeQualification() throws Exception {
+        long countBefore = projectRepository.count();
+
+        when(employeeClient.findById(12L)).thenReturn(
+                new EmployeeDto(
+                        12L, "Mustermann", "Max",
+                        "Musterstraße 1", "12345", "Musterstadt",
+                        "0123456789",
+                        List.of(new SkillDto("Andere Qualifikation", 1L))
+                )
+        );
+
+        mockMvc.perform(post("/projects")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(validRequest))
+                .andExpect(status().isConflict());
+
+        assertEquals(countBefore, projectRepository.count());
+    }
+
+    @Test
+    void createProjectWhenEmployeeServiceIsUnavailableForProjectEmployee()
+            throws Exception {
+        long countBefore = projectRepository.count();
+
+        when(employeeClient.findById(15L)).thenThrow(
+                new EmployeeServiceNotAvailableException(
+                        "Employee-Service ist nicht erreichbar"
+                )
+        );
+
+        mockMvc.perform(post("/projects")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(validRequest))
+                .andExpect(status().isServiceUnavailable());
+
+        assertEquals(countBefore, projectRepository.count());
+    }
+
+    @Test
+    void createProjectWithNonExistingResponsibleEmployee() throws Exception {
+        long countBefore = projectRepository.count();
+
+        when(employeeClient.findById(99L)).thenReturn(null);
+
+        String request = validRequest.replace(
+                "\"responsibleEmployeeId\": 12",
+                "\"responsibleEmployeeId\": 99"
+        );
+
+        mockMvc.perform(post("/projects")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(request))
+                .andExpect(status().isNotFound());
+
+        assertEquals(countBefore, projectRepository.count());
+    }
+
+    @Test
+    void createProjectWhenEmployeeServiceIsUnavailableForResponsibleEmployee()
+            throws Exception {
+        long countBefore = projectRepository.count();
+
+        when(employeeClient.findById(12L)).thenThrow(
+                new EmployeeServiceNotAvailableException(
+                        "Employee-Service ist nicht erreichbar"
+                )
+        );
+
+        mockMvc.perform(post("/projects")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(validRequest))
+                .andExpect(status().isServiceUnavailable());
+
+        assertEquals(countBefore, projectRepository.count());
     }
 
     @Test
