@@ -50,6 +50,13 @@ public class ProjectService {
         return mapper.toDTO(saved);
     }
 
+    @Transactional
+    public ProjectDTO findOneByID(Long id) {
+        Project project =  repository.findById(id).orElseThrow(() -> new ProjectNotFoundException(id));
+        return mapper.toDTO(project);
+    }
+
+
 
     @Transactional(readOnly = true)
     public List<ProjectDTO> findAll() {
