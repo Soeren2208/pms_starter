@@ -2,16 +2,21 @@ package de.szut.pms.project;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import java.net.URI;
 import java.util.List;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/projects")
@@ -86,6 +91,22 @@ public class ProjectController {
         return ResponseEntity.created(location).body(created);
     }
 
+    @ApiResponse(responseCode = "200", description = "Gesuchtes Projekt mit Mitarbeiter erhalten")
+    @ApiResponse(responseCode = "400", description = "Fehler in der Anfrage, möglich das die ID keine Zahl ist",content = @Content(mediaType = "application/problem+json"))
+    @ApiResponse(responseCode = "404", description = "Projekt nicht gefunden",content = @Content(mediaType = "application/problem+json"))
+    @GetMapping(value = "{id}/employees", produces = "application/json")
+    public ResponseEntity<ProjectEmployeesDTO> getEmployessFromProject(@PathVariable Long id){
+        return ResponseEntity.ok().body(service.findAllEmployeesOfProjectOneByID(id));
+    }
+
+    @ApiResponse(responseCode = "200", description = "Gesuchtes Projekt erhalten")
+    @ApiResponse(responseCode = "400", description = "Fehler in der Anfrage, möglich das die ID keine Zahl ist",content = @Content(mediaType = "application/problem+json"))
+    @ApiResponse(responseCode = "404", description = "Projekt nicht gefunden",content = @Content(mediaType = "application/problem+json"))
+    @GetMapping(value = "{id}", produces = "application/json")
+    public ResponseEntity<ProjectDTO> getProject(@PathVariable Long id){
+        return ResponseEntity.ok().body(service.findOneByID(id));
+    }
+
 
     @Operation(summary = "Erhalte eine Liste aller Projekte")
     @ApiResponse(responseCode = "200", description = "Projekte erfolgreich abgerufen")
@@ -94,4 +115,27 @@ public class ProjectController {
     public ResponseEntity<List<ProjectDTO>> findAll() {
         return ResponseEntity.ok(service.findAll());
     }
+
+    @Operation(summary = "Delete a project")
+    @ApiResponse(responseCode = "204", description = "Project successfully deleted")
+    @ApiResponse(responseCode = "404", description = "Project not found")
+    @ApiResponse(responseCode = "401", description = "Invalid JWT")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteById(@PathVariable Long id){
+        service.deleteById(id);
+        return ResponseEntity.noContent().build(); //mit .ok() würde 200 returnt
+    }
+
+    @Operation(summary = "Remove an employee from project")
+    @ApiResponse(responseCode = "200", description = "Employee successfully removed")
+    @ApiResponse(responseCode = "404", description = "Projekt(Id) existiert nicht oder Mitarbeiter ist dem Projekt nicht zugeordnet")
+//  @ApiResponse(responseCode = "404", description = "Projekt(Id) existiert nicht")
+//  @ApiResponse(responseCode = "404", description = "Mitarbeiter ist dem Projekt nicht zugeordnet")
+    @ApiResponse(responseCode = "401", description = "Invalider JWT")
+    @DeleteMapping("/{projectId}/employees/{employeeId}")
+    public ResponseEntity<ProjectEmployeeRemoveDTO> removeEmployee(@PathVariable Long projectId, @PathVariable Long employeeId){
+        ProjectEmployeeRemoveDTO projectEmployeeRemoveDTO = service.removeEmployee(projectId, employeeId);
+        return ResponseEntity.ok(projectEmployeeRemoveDTO);
+    }
+
 }

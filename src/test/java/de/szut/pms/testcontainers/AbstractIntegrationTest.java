@@ -1,5 +1,7 @@
 package de.szut.pms.testcontainers;
 
+import de.szut.pms.project.ProjectRepository;
+import de.szut.pms.projectemployee.ProjectEmployeeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
@@ -25,8 +27,18 @@ public class AbstractIntegrationTest {
     @Autowired
     protected HelloRepository helloRepository;
 
+    @Autowired
+    protected ProjectRepository projectRepository;
+
+    @Autowired
+    protected ProjectEmployeeRepository projectEmployeeRepository;
+
     @BeforeEach
     void setUp() {
+        projectEmployeeRepository.deleteAll();
+        projectRepository.deleteAll();
         helloRepository.deleteAll();
     }
+
+
 }
