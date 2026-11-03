@@ -112,7 +112,7 @@ public class ProjectController {
     @ApiResponse(responseCode = "200", description = "Projekte erfolgreich abgerufen")
     @ApiResponse(responseCode = "500", description = "Interner Serverfehler")
     @GetMapping
-    public ResponseEntity<List<ProjectDTO>> findAll() {
+    public ResponseEntity<List<ProjectOverviewDTO>> findAll() {
         return ResponseEntity.ok(service.findAll());
     }
 
