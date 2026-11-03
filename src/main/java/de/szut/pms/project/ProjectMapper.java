@@ -5,7 +5,6 @@ import de.szut.pms.projectemployee.ProjectEmployeeDTO;
 import de.szut.pms.projectemployee.ProjectEmployeeMapper;
 import org.springframework.stereotype.Component;
 import de.szut.pms.projectemployee.CreateProjectEmployeeDTO;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +37,22 @@ public class ProjectMapper {
 
         return dto;
     }
+
+    public ProjectEmployeesDTO toProjectEmployeesDTO(Project entity) {
+        ProjectEmployeesDTO dto = new ProjectEmployeesDTO();
+        dto.setProjectId(entity.getId());
+        dto.setDescription(entity.getDescription());
+        List<ProjectEmployeeDTO> dtos = new ArrayList<>();
+        for (ProjectEmployee employee : entity.getEmployee()) {
+            dtos.add(projectEmployeeMapper.toDTO(employee));
+        }
+
+        dto.setEmployees(dtos);
+        return dto;
+    }
+
+    public Project toEntity(ProjectDTO dto) {return new Project();}
+
 
 
     public Project toEntity(CreateProjectDTO dto) {

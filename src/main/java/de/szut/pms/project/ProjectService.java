@@ -53,6 +53,13 @@ public class ProjectService {
         return mapper.toDTO(saved);
     }
 
+    @Transactional
+    public ProjectDTO findOneByID(Long id) {
+        Project project =  repository.findById(id).orElseThrow(() -> new ProjectNotFoundException(id));
+        return mapper.toDTO(project);
+    }
+
+
 
     @Transactional(readOnly = true)
     public List<ProjectDTO> findAll() {
@@ -60,6 +67,7 @@ public class ProjectService {
                 .map(mapper::toDTO)
                 .toList();
     }
+
 
     @Transactional
     public ProjectEmployeeRemoveDTO removeEmployee(Long projectId, Long employeeId){
@@ -80,6 +88,13 @@ public class ProjectService {
         }
         repository.save(project);
         return mapper.toRemoveEmployeeDTO(project);
+    }
+
+
+    @Transactional
+    public ProjectEmployeesDTO findAllEmployeesOfProjectOneByID(Long id) {
+        Project project =  repository.findById(id).orElseThrow(() -> new ProjectNotFoundException(id));
+        return mapper.toProjectEmployeesDTO(project);
     }
 
 }
