@@ -3,7 +3,7 @@ package de.szut.pms.common;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-
+import de.szut.pms.project.ProjectNotFoundException;
 import de.szut.pms.employee.EmployeeServiceNotAvailableException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -13,6 +13,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import de.szut.pms.hello.HelloNotFoundException;
+import org.springframework.web.client.ResourceAccessException;
 import de.szut.pms.employee.QualificationMissingException;
 
 /**
@@ -56,6 +57,14 @@ public class ApiExceptionHandler {
         return problem;
     }
 
+    @ExceptionHandler(ProjectNotFoundException.class)
+    public ProblemDetail handleProjectNotFound(ProjectNotFoundException ex) {
+        ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
+        problem.setTitle("Projekt nicht gefunden");
+        return problem;
+    }
+
+
     @ExceptionHandler(QualificationMissingException.class)
     public ProblemDetail handleQualificationMissing(QualificationMissingException ex) {
         ProblemDetail problem = ProblemDetail.forStatusAndDetail(
@@ -72,3 +81,4 @@ public class ApiExceptionHandler {
         return problem;
     }
 }
+

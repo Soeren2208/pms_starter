@@ -59,7 +59,12 @@ public class ProjectService {
         return mapper.toDTO(project);
     }
 
-
+    @Transactional
+    public void deleteById(Long id){
+        Project project = repository.findById(id)
+                .orElseThrow(()->new ProjectNotFoundException(id));
+        repository.delete(project);
+    }
 
     @Transactional(readOnly = true)
     public List<ProjectDTO> findAll() {
