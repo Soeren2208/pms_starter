@@ -1,6 +1,6 @@
 package de.szut.pms.project;
 
-
+import de.szut.pms.common.ResourceNotFoundException;
 import de.szut.pms.customer.CustomerClient;
 import de.szut.pms.customer.CustomerNotFoundException;
 import de.szut.pms.employee.EmployeeQualificationService;
@@ -52,6 +52,13 @@ public class ProjectService {
 
         return mapper.toDTO(saved);
     }
+
+    @Transactional
+    public ProjectDTO findOneByID(Long id) {
+        Project project =  repository.findById(id).orElseThrow(() -> new ProjectNotFoundException(id));
+        return mapper.toDTO(project);
+    }
+
     @Transactional
     public void deleteById(Long id){
         Project project = repository.findById(id)
@@ -64,6 +71,12 @@ public class ProjectService {
         return repository.findAll().stream()
                 .map(mapper::toDTO)
                 .toList();
+    }
+
+    @Transactional
+    public ProjectEmployeesDTO findAllEmployeesOfProjectOneByID(Long id) {
+        Project project =  repository.findById(id).orElseThrow(() -> new ProjectNotFoundException(id));
+        return mapper.toProjectEmployeesDTO(project);
     }
 
 }
