@@ -6,7 +6,6 @@ import de.szut.pms.employee.EmployeeQualificationService;
 import de.szut.pms.projectemployee.CreateProjectEmployeeDTO;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -64,6 +63,12 @@ public class ProjectService {
         return repository.findAll().stream()
                 .map(mapper::toDTO)
                 .toList();
+    }
+
+    @Transactional
+    public ProjectEmployeesDTO findAllEmployeesOfProjectOneByID(Long id) {
+        Project project =  repository.findById(id).orElseThrow(() -> new ProjectNotFoundException(id));
+        return mapper.toProjectEmployeesDTO(project);
     }
 
 }
