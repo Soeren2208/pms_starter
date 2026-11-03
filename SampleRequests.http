@@ -1,5 +1,5 @@
 ### Zuerst in GetBearerToken.http einen Token holen und hier eintragen
-@bearer_token=eyJhbGciOiJSUzI1NiIsImtpZCI6Ijk5MTFhZWQ1YTkyZjYyMjU0NjVlOGVlYzYxZjU5YzBlIiwidHlwIjoiSldUIn0.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjkwMDAvYXBwbGljYXRpb24vby9lbXBsb3llZV9hcGkvIiwic3ViIjoiMzJiZDEyOTgwMjA3MWE2NTViMDdmZjYzMTA1NjFiNTY5MDhhZjM0OGY5Y2RiMWU0MjkxMDZhMTE2MTIzZTUxNyIsImF1ZCI6ImVtcGxveWVlX2FwaV9jbGllbnQiLCJleHAiOjE3OTM3MDIzMjcsImlhdCI6MTc5MzY5OTMyNywiYXV0aF90aW1lIjoxNzkzNjk5MzI3LCJhY3IiOiJnb2F1dGhlbnRpay5pby9wcm92aWRlcnMvb2F1dGgyL2RlZmF1bHQiLCJhenAiOiJlbXBsb3llZV9hcGlfY2xpZW50IiwidWlkIjoiMUJUdlpXR0NsemNOa3Noc3ZsOEhNdHdObk9sSlRIZzhaZkdBOUZ3dyJ9.UagNbOqvC50QAujtZzDOE46maLmyRtgcivLS9LDd2xdSAaQJHRmQzdCO8unMsfxbwiCYTYB04_jwL8U2i1nQAG6YDFVrQC9A1B2FhyXus0IE1GnIS0l8E-s8yIKfd4z1n74jQLg3TvWi0eWnKcHxc6JLDy_NsvPVOquPg8oPwCWEO_0Tc9EOU611KhHbJNevab2N34l8pBtctoTrIzSXOH83doXE-ZRnKXmpDcZgVsZd73xjBRgSQHLG9WqO-1YV7td6oPcBHFMI_R68ZNSPJSjIiOOMLd2tEvpwxL1wedTtSoDB2td8At_6qpWhL2zspKdlR5hSAPOGyPLVjvD0Ua_Yi0bVA0rfBZAqBMiD0Elxolc3Fe6q3D1EGc4oaldK3_BJKopOncILtRCW33fBUSd3pppvKYF9BTPKPT5Rk8qxfsY78_40v8B-lriQruhnuC_arz8kF67OEzGCs2VyqvKgD_atkRNHTKU8TVrvzxQDlFW8EI-y2yPUj8Yod-E-968bLuNfHJ4cGE5lkaWPAVT5hKbwPmNxZznq1My7WPpAcSEfWqXlJ83NUZb29h8yF5M6OkfXGhveLLGM87JCyZNYMOPeHkEppWLmy3evfZUX4roa1GiWNGg_e3SAO-KxKoelKs-Bz8RReHUGNXR3rMmL-pfCqOujvlgqvPGPGc8
+@bearer_token=eyJhbGciOiJSUzI1NiIsImtpZCI6Ijk5MTFhZWQ1YTkyZjYyMjU0NjVlOGVlYzYxZjU5YzBlIiwidHlwIjoiSldUIn0.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjkwMDAvYXBwbGljYXRpb24vby9lbXBsb3llZV9hcGkvIiwic3ViIjoiMzJiZDEyOTgwMjA3MWE2NTViMDdmZjYzMTA1NjFiNTY5MDhhZjM0OGY5Y2RiMWU0MjkxMDZhMTE2MTIzZTUxNyIsImF1ZCI6ImVtcGxveWVlX2FwaV9jbGllbnQiLCJleHAiOjE3OTMyODY5NTgsImlhdCI6MTc5MzI4Mzk1OCwiYXV0aF90aW1lIjoxNzkzMjgzOTU4LCJhY3IiOiJnb2F1dGhlbnRpay5pby9wcm92aWRlcnMvb2F1dGgyL2RlZmF1bHQiLCJhenAiOiJlbXBsb3llZV9hcGlfY2xpZW50IiwidWlkIjoiZkxTc0pyNmRqQ05maFZCd3BIWDJwM01LOHpseFREMEhJd3N1S1JhSSJ9.hsfyLmHOG1qzrA8LS4jnAilfVx6sY4zJvDcykYXnBNRytOcYEbr901VgC9BdGWcWEiaxwK2IDVPKqa_C1QkFL54vc2aqr233sNtYrKnHJ5-WTR5HsQjHTZVCJSV6sPtL2NNyfFTIkhL3BKg4qM0DIV0Wl1ttbxgT565EE0aRGCSibBP2GapyAIyX5lI-FQgYLioePyYl1OQR8fLsbGhsAMqt3-pS-pZd0kG2KQc2o4VePBrJrZZ0GQ_D6MNI4Y9ipr4cdPGnnXT63Pnr1o6D9f13PI2aW7veLTAGuQZWEqVfmf_tXvDEkX1SOHcDo01YEvL5wfLRl7VT975B1Bt9Qp-x3A8Z1xg3XLTV9ouOAqWUCsYkR8fGr99mWrVYp3dUOKF5o24qEjc5vspqlmzpqxyT_s5eD_AJE95WmLEUXjd38HhoiShmiMs_CVMrxhPLPz-WmN6klK9rPKr-BgYiXAydx3sXOSxrI03yZlFQW4OD7C-PpV9fbwJu7nTOFDoQPkw3YhF92_lo5p19zedkw0DUTk5w7Fl6A7dML5YWKxw9xFVT76aOuVOLwDOltncb4VkimRfMfixaqVZQYNw31fLuH65zSR2woyb3we9CYceVU5cufsJE6LGfQwqp1ursm7fZ7V0ODAvfkuNIxAxAVcOlCBMqtcdOJzIu-OO6L7k
 
 
 ### Einen Eintrag anlegen
@@ -11,7 +11,7 @@ Authorization: Bearer {{bearer_token}}
   "projectName": "Ein Projekt",
   "startDate": "2026-10-28T10:34:42.573Z",
   "endDate": "2026-10-28T10:34:42.573Z",
-  "projectLeadId": 2,
+  "projectLeadId": 1,
   "customerId": 1,
   "description": "Ein weiteres Projekt zum testen",
   "employees": [
@@ -28,8 +28,8 @@ Content-Type: application/json
 Authorization: Bearer {{bearer_token}}
 
 {
-  "employeeId": 2,
-  "qualificationId": 99
+  "employeeId": 1,
+  "qualificationId": 1
 }
 
 ### Alle Projekte abrufen
@@ -48,6 +48,9 @@ GET http://localhost:8080/projects/1
 Authorization: Bearer {{bearer_token}}
 Accept: application/json
 
+### Einen Mitarbeiter aus einem Projekt entfernen
+DELETE http://localhost:8080/projects/1/employees/1
+Authorization: Bearer {{bearer_token}}
 
 
 
@@ -59,9 +62,5 @@ Authorization: Bearer {{bearer_token}}
 
 ### Nach Nachricht suchen
 GET http://localhost:8080/hello/findByMessage?message=Hallo Welt!
-Authorization: Bearer {{bearer_token}}
-
-### Einen Eintrag löschen
-DELETE http://localhost:8080/hello/1
 Authorization: Bearer {{bearer_token}}
 

@@ -70,6 +70,13 @@ public class ProjectController {
         return ResponseEntity.ok(service.findById(id));
     }
 
+    //löscht einen ProjectEmployee Eintrag, der einen MA mit einem Projekt verknüpft
+    @DeleteMapping("/{projectId}/employees/{employeeId}")
+    public ResponseEntity<Void> removeEmployeeFromProject(@PathVariable Long projectId, @PathVariable Long employeeId){
+            service.removeEmployeeFromProject(projectId, employeeId);
+            return ResponseEntity.noContent().build();
+    }
+
     /**
      * Retrieves all projects an employee has participated in
      *

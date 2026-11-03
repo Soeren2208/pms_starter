@@ -3,6 +3,10 @@ package de.szut.pms.project;
 import de.szut.pms.client.*;
 import de.szut.pms.common.exceptions.*;
 import de.szut.pms.customer.DummyCustomerClient;
+import de.szut.pms.client.ExternalApiClient;
+import de.szut.pms.client.EmployeeDto;
+import de.szut.pms.common.exceptions.ProjectEmployeeNotFoundException;
+import de.szut.pms.common.exceptions.ProjectNotFoundException;
 import de.szut.pms.projectemployee.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -258,4 +262,23 @@ public class ProjectService {
     }
 
 
+
+    @Transactional
+    public void removeEmployeeFromProject(Long projectId, Long employeeId) {
+
+        // Check if project exists
+        if (!projectRepository.existsById(projectId)) {
+            throw new ProjectNotFoundException(projectId);
+        }
+
+        // Find employee assignment
+        ProjectEmployee assignment =
+                projectEmployeeRepository
+                        .findByProjectIdAndEmployeeId(projectId, employeeId)
+                        .orElseThrow(() ->
+                                new ProjectEmployeeNotFoundException(projectId, employeeId));
+
+        // Delete assignment
+        projectEmployeeRepository.delete(assignment);
+    }
 }
