@@ -4,6 +4,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import de.szut.pms.project.ProjectNotFoundException;
+import de.szut.pms.employee.EmployeeServiceNotAvailableException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
@@ -11,8 +12,9 @@ import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
 import de.szut.pms.hello.HelloNotFoundException;
+import org.springframework.web.client.ResourceAccessException;
+import de.szut.pms.employee.QualificationMissingException;
 
 /**
  * Zentrale Übersetzung von Ausnahmen in HTTP-Antworten nach RFC 9457
@@ -59,6 +61,23 @@ public class ApiExceptionHandler {
     public ProblemDetail handleProjectNotFound(ProjectNotFoundException ex) {
         ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
         problem.setTitle("Projekt nicht gefunden");
+        return problem;
+    }
+
+
+    @ExceptionHandler(QualificationMissingException.class)
+    public ProblemDetail handleQualificationMissing(QualificationMissingException ex) {
+        ProblemDetail problem = ProblemDetail.forStatusAndDetail(
+                HttpStatus.CONFLICT, ex.getMessage());
+        problem.setTitle("Nicht vorhandene Qualifikation");
+        return problem;
+    }
+
+    @ExceptionHandler(EmployeeServiceNotAvailableException.class)
+    public ProblemDetail handleEmployeeServiceNotAvailable(EmployeeServiceNotAvailableException ex) {
+        ProblemDetail problem = ProblemDetail.forStatusAndDetail(
+                HttpStatus.SERVICE_UNAVAILABLE, ex.getMessage());
+        problem.setTitle("Employee Service nicht erreichbar");
         return problem;
     }
 }
