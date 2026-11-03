@@ -51,7 +51,7 @@ public class ApiExceptionHandler {
     @ExceptionHandler(EmployeeNotFoundException.class)
     public ProblemDetail handleEmployeeNotExists(EmployeeNotFoundException ex) {
         ProblemDetail problem =
-                ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.getMessage());
+                ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
         problem.setTitle("Mitarbeitenden-ID existiert nicht.");
 
         return problem;
@@ -60,7 +60,7 @@ public class ApiExceptionHandler {
     @ExceptionHandler(CustomerNotFoundException.class)
     public ProblemDetail handleCustomerNotExists(CustomerNotFoundException ex) {
         ProblemDetail problem =
-                ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.getMessage());
+                ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
         problem.setTitle("Kunden-ID existiert nicht.");
 
         return problem;
@@ -95,7 +95,7 @@ public class ApiExceptionHandler {
     @ExceptionHandler(QualificationNotFoundException.class)
     public ProblemDetail handleQualificationNotExists(QualificationNotFoundException ex) {
         ProblemDetail problem =
-                ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.getMessage());
+                ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
         problem.setTitle("Qualifikations-ID existiert nicht.");
 
         return problem;
