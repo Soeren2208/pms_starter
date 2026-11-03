@@ -1,13 +1,10 @@
 package de.szut.pms.project;
 
-import de.szut.pms.common.ResourceNotFoundException;
 import de.szut.pms.customer.CustomerClient;
 import de.szut.pms.customer.CustomerNotFoundException;
 import de.szut.pms.employee.EmployeeQualificationService;
 import de.szut.pms.projectemployee.CreateProjectEmployeeDTO;
-import de.szut.pms.projectemployee.ProjectEmployee;
 import org.springframework.transaction.annotation.Transactional;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
