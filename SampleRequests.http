@@ -1,5 +1,5 @@
 ### Zuerst in GetBearerToken.http einen Token holen und hier eintragen
-@bearer_token=eyJhbGciOiJSUzI1NiIsImtpZCI6IjhkY2YzODZmM2IwMDI5OGI1Yjk3YzVlZTU3ZWRiYjg2IiwidHlwIjoiSldUIn0.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjkwMDAvYXBwbGljYXRpb24vby9lbXBsb3llZV9hcGkvIiwic3ViIjoiY2Q3YWQ5NGYyMzRmMzg1YTA1MTI0NjE2MzVhNThkMjlhMmU3YjZhYWYyODg4OTE0MWNiMTk2MDA4NTBmYjcwNiIsImF1ZCI6ImVtcGxveWVlX2FwaV9jbGllbnQiLCJleHAiOjE3OTM1NTQzODcsImlhdCI6MTc5MzU1MTM4OCwiYXV0aF90aW1lIjoxNzkzNTUxMzg3LCJhY3IiOiJnb2F1dGhlbnRpay5pby9wcm92aWRlcnMvb2F1dGgyL2RlZmF1bHQiLCJhenAiOiJlbXBsb3llZV9hcGlfY2xpZW50IiwidWlkIjoicDFjdU1naVhEc2JKbVZTcGdVd01Tc0ZSUlBueTRDNVZnTEZwZ3BaUiJ9.NVzuRveI1QGhQNX9MQWp9DVBPyzwuewARmT36_piqC5WtzIgUNjAEevcn4v5sVeakrhBi-hjTgS2J3-ufWMZh_tOfBNNFw_ezz-ow1lnNy2bNNq6KM2ytgwc9-zOfi1vZjFEGqbI2gpKQaW9dznW-9bwYMkjzZ8-pRR7vQqQG_MmJ5BnRKRZ0-WQbeqjq_j5L3WgjCWlN8rbhUp6CF98UC7OTjxANjfXT2SRoSA3lG-b2mLVZ_4OXYFeK-_4gyG2NrXmlab9_FIykXWsfn3Hzs-SdugZA68F8pNXjyjMpc25qw9en-0I-lKExm3Tyl5nbBI-9zHlx8k136VG_22w3BYLfAzAbc1HHfW5ByGHKAP_1E3uiaZ7dTvuaT0xgqVviUfoxWChMPcJoGtkc2TL3WopHg7xxvAnHC57gdd5-GdXJDcIL8OMdxK25Q61zR8RXLzGraKENlo-7SuvCirjSRNs_LAy53SXHmQjoYcRWzoW1E5R21maycWSxcOqIPzys4OyEMWsnyoC9zI-RFDiJYBqow9i-LVuRYLk70NUIvjPhOjgfzE8Yw8L4nnZ10wh_vd9jAtIvpc8kJl5eYaIctco6v7BkaYkOwdNFaf-7Cd4BuEiqc6MPqTIMpFY_lvWGfJoo7rI5HEum-k2796QsRYdSnMWvqcP0i_Y5d5O7iE
+@bearer_token=eyJhbGciOiJSUzI1NiIsImtpZCI6Ijk5MTFhZWQ1YTkyZjYyMjU0NjVlOGVlYzYxZjU5YzBlIiwidHlwIjoiSldUIn0.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjkwMDAvYXBwbGljYXRpb24vby9lbXBsb3llZV9hcGkvIiwic3ViIjoiMzJiZDEyOTgwMjA3MWE2NTViMDdmZjYzMTA1NjFiNTY5MDhhZjM0OGY5Y2RiMWU0MjkxMDZhMTE2MTIzZTUxNyIsImF1ZCI6ImVtcGxveWVlX2FwaV9jbGllbnQiLCJleHAiOjE3OTM3MDIzMjcsImlhdCI6MTc5MzY5OTMyNywiYXV0aF90aW1lIjoxNzkzNjk5MzI3LCJhY3IiOiJnb2F1dGhlbnRpay5pby9wcm92aWRlcnMvb2F1dGgyL2RlZmF1bHQiLCJhenAiOiJlbXBsb3llZV9hcGlfY2xpZW50IiwidWlkIjoiMUJUdlpXR0NsemNOa3Noc3ZsOEhNdHdObk9sSlRIZzhaZkdBOUZ3dyJ9.UagNbOqvC50QAujtZzDOE46maLmyRtgcivLS9LDd2xdSAaQJHRmQzdCO8unMsfxbwiCYTYB04_jwL8U2i1nQAG6YDFVrQC9A1B2FhyXus0IE1GnIS0l8E-s8yIKfd4z1n74jQLg3TvWi0eWnKcHxc6JLDy_NsvPVOquPg8oPwCWEO_0Tc9EOU611KhHbJNevab2N34l8pBtctoTrIzSXOH83doXE-ZRnKXmpDcZgVsZd73xjBRgSQHLG9WqO-1YV7td6oPcBHFMI_R68ZNSPJSjIiOOMLd2tEvpwxL1wedTtSoDB2td8At_6qpWhL2zspKdlR5hSAPOGyPLVjvD0Ua_Yi0bVA0rfBZAqBMiD0Elxolc3Fe6q3D1EGc4oaldK3_BJKopOncILtRCW33fBUSd3pppvKYF9BTPKPT5Rk8qxfsY78_40v8B-lriQruhnuC_arz8kF67OEzGCs2VyqvKgD_atkRNHTKU8TVrvzxQDlFW8EI-y2yPUj8Yod-E-968bLuNfHJ4cGE5lkaWPAVT5hKbwPmNxZznq1My7WPpAcSEfWqXlJ83NUZb29h8yF5M6OkfXGhveLLGM87JCyZNYMOPeHkEppWLmy3evfZUX4roa1GiWNGg_e3SAO-KxKoelKs-Bz8RReHUGNXR3rMmL-pfCqOujvlgqvPGPGc8
 
 
 ### Einen Eintrag anlegen
@@ -8,12 +8,12 @@ Content-Type: application/json
 Authorization: Bearer {{bearer_token}}
 
 {
-  "projectName": "Test",
+  "projectName": "Ein Projekt",
   "startDate": "2026-10-28T10:34:42.573Z",
   "endDate": "2026-10-28T10:34:42.573Z",
-  "projectLeadId": 1,
-  "customerId": 10,
-  "description": "Ein Projekt zum testen",
+  "projectLeadId": 2,
+  "customerId": 1,
+  "description": "Ein weiteres Projekt zum testen",
   "employees": [
     {
       "employeeId": 1,
@@ -23,17 +23,22 @@ Authorization: Bearer {{bearer_token}}
 }
 
 ### Einen Mitarbeiter zum Projekt hinzufügen
-POST http://localhost:8080/projects/2/employees
+POST http://localhost:8080/projects/1/employees
 Content-Type: application/json
 Authorization: Bearer {{bearer_token}}
 
 {
   "employeeId": 2,
-  "qualificationId": 1
+  "qualificationId": 99
 }
 
 ### Alle Projekte abrufen
 GET http://localhost:8080/projects
+Authorization: Bearer {{bearer_token}}
+Accept: application/json
+
+### Alle Projekte eines Mitarbeiters abrufen (inkl. Qualifikationen)
+GET http://localhost:8080/projects/employees/1
 Authorization: Bearer {{bearer_token}}
 Accept: application/json
 

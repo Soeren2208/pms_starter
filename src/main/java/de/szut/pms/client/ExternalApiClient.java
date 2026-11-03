@@ -5,6 +5,8 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.util.List;
+
 
 @Component
 public class ExternalApiClient {
@@ -48,6 +50,16 @@ public class ExternalApiClient {
                 .headers(h -> h.setBearerAuth(getCurrentToken()))
                 .retrieve()
                 .bodyToMono(String.class)
+                .block();
+    }
+
+    public List<QualificationDto> getAllQualifications() {
+        return webClient.get()
+                .uri("/qualifications")
+                .headers(h -> h.setBearerAuth(getCurrentToken()))
+                .retrieve()
+                .bodyToFlux(QualificationDto.class)
+                .collectList()
                 .block();
     }
 }

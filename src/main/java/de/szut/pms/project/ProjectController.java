@@ -1,5 +1,6 @@
 package de.szut.pms.project;
 
+import de.szut.pms.client.EmployeeProjectsDto;
 import de.szut.pms.projectemployee.CreateProjectEmployeeDto;
 import de.szut.pms.projectemployee.ProjectEmployeeDto;
 import org.springframework.http.ResponseEntity;
@@ -68,4 +69,19 @@ public class ProjectController {
 
         return ResponseEntity.ok(service.findById(id));
     }
+
+    /**
+     * Retrieves all projects an employee has participated in
+     *
+     * @param employeeId the identifier of the employee
+     * @return a list of projects associated with the employee, including their qualifications
+     */
+    @GetMapping("/employees/{employeeId}")
+    public ResponseEntity<EmployeeProjectsDto> getProjectsByEmployeeId(
+            @PathVariable Long employeeId) {
+
+        EmployeeProjectsDto response = service.getProjectsByEmployeeId(employeeId);
+        return ResponseEntity.ok(response);
+    }
+
 }

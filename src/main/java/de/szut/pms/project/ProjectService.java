@@ -1,7 +1,6 @@
 package de.szut.pms.project;
 
-import de.szut.pms.client.ExternalApiClient;
-import de.szut.pms.client.EmployeeDto;
+import de.szut.pms.client.*;
 import de.szut.pms.common.exceptions.*;
 import de.szut.pms.customer.DummyCustomerClient;
 import de.szut.pms.projectemployee.*;
@@ -39,7 +38,7 @@ public class ProjectService {
         }
 
         // prüft CustomerID
-        if(!dummyCustomerClient.existsById(dto.customerId())) {
+        if (!dummyCustomerClient.existsById(dto.customerId())) {
             throw new CustomerNotFoundException(dto.customerId());
         }
         // prüft ob Lead ID existiert
@@ -51,15 +50,51 @@ public class ProjectService {
 
 
         // prüft ob IDs (falls angegeben) gültig sind
+        List<QualificationDto> qualifications =
+                externalApiClient.getAllQualifications();
+
         if (dto.employees() != null) {
             for (CreateProjectEmployeeDto projectEmployeeDto : dto.employees()) {
-                Long id = projectEmployeeDto.employeeId();
+
+                Long employeeId = projectEmployeeDto.employeeId();
+                Long qualificationId = projectEmployeeDto.qualificationId();
 
                 try {
-                    externalApiClient.getEmployeeById(id);
+                    externalApiClient.getEmployeeById(employeeId);
                 } catch (Exception e) {
-                    throw new EmployeeNotFoundException(id);
+                    throw new EmployeeNotFoundException(employeeId);
                 }
+
+                boolean qualificationExists = qualifications.stream()
+                        .anyMatch(q -> q.id().equals(qualificationId));
+
+                if (!qualificationExists) {
+                    throw new QualificationNotFoundException(
+                            qualificationId);
+                }
+
+                // Prüfen ob MA im Zeitraum schon busy ist
+                List<ProjectEmployee> existingAssignments =
+                        projectEmployeeRepository.findByEmployeeId(employeeId);
+
+                for (ProjectEmployee existing : existingAssignments) {
+                    // Da die Zeiträume im Projekt liegen, holen wir das verknüpfte Projekt der alten Zuordnung
+                    Project existingProject = existing.getProject();
+
+                    // Überschneidungs-Logik zwischen dem neuen Projekt (aus dem dto) und dem bestehenden Projekt
+                    // (Start_Neu <= Ende_Alt) UND (Ende_Neu >= Start_Alt)
+                    boolean overlaps = !dto.startDate().isAfter(existingProject.getEndDate()) &&
+                            !dto.endDate().isBefore(existingProject.getStartDate());
+
+                    if (overlaps) {
+                        throw new ProjectPeriodConflictException(
+                                employeeId,
+                                dto.startDate(),
+                                dto.endDate()
+                        );
+                    }
+                }
+
             }
         }
 
@@ -127,6 +162,17 @@ public class ProjectService {
             throw new EmployeeNotFoundException(dto.employeeId());
         }
 
+        // prüft ob valide Qualifikations ID
+        List<QualificationDto> qualifications =
+                externalApiClient.getAllQualifications();
+
+        boolean qualificationExists = qualifications.stream()
+                .anyMatch(q -> q.id().equals(dto.qualificationId()));
+
+        if (!qualificationExists) {
+            throw new QualificationNotFoundException(
+                    dto.qualificationId());
+        }
         // prüfen: ist MA schon am Projekt beteiligt
         if (projectEmployeeRepository.existsByProjectIdAndEmployeeId(
                 projectId,
@@ -136,6 +182,25 @@ public class ProjectService {
                     dto.employeeId());
         }
 
+        // Zeitraum-Prüfung
+        List<ProjectEmployee> existingAssignments =
+                projectEmployeeRepository.findByEmployeeId(dto.employeeId());
+
+        for (ProjectEmployee existing : existingAssignments) {
+            Project existingProject = existing.getProject();
+
+            // Vergleicht die Laufzeit des aktuellen Projekts mit den bestehenden Projekten
+            boolean overlaps = !project.getStartDate().isAfter(existingProject.getEndDate()) &&
+                    !project.getEndDate().isBefore(existingProject.getStartDate());
+
+            if (overlaps) {
+                throw new ProjectPeriodConflictException(
+                        dto.employeeId(),
+                        project.getStartDate(),
+                        project.getEndDate()
+                );
+            }
+        }
 
         assignment.setProject(project);
         assignment.setEmployeeId(dto.employeeId());
@@ -163,4 +228,34 @@ public class ProjectService {
 
         return mapper.toDto(project, employees);
     }
+
+    public EmployeeProjectsDto getProjectsByEmployeeId(Long employeeId) {
+        List<ProjectEmployee> assignments = projectEmployeeRepository.findByEmployeeId(employeeId);
+        List<QualificationDto> allQualifications = externalApiClient.getAllQualifications();
+        List<EmployeeProjectsDetailsDto> projectDetailsList = new ArrayList<>();
+
+        for (ProjectEmployee assignment : assignments) {
+            Project project = assignment.getProject();
+            Long qualId = assignment.getQualificationID();
+
+            String qualName = allQualifications.stream()
+                    .filter(q -> q.id().equals(qualId))
+                    .map(QualificationDto::skill)
+                    .findFirst()
+                    .orElse("Unbekannte Qualifikation");
+
+            projectDetailsList.add(new EmployeeProjectsDetailsDto(
+                    project.getId(),
+                    project.getProjectName(),
+                    project.getStartDate(),
+                    project.getEndDate(),
+                    qualId,
+                    qualName
+            ));
+        }
+
+        return new EmployeeProjectsDto(employeeId, projectDetailsList);
+    }
+
+
 }
