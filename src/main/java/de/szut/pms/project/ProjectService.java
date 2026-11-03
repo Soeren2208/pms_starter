@@ -1,11 +1,14 @@
 package de.szut.pms.project;
 
+import de.szut.pms.common.ResourceNotFoundException;
 import de.szut.pms.customer.CustomerClient;
 import de.szut.pms.customer.CustomerNotFoundException;
 import de.szut.pms.employee.EmployeeQualificationService;
 import de.szut.pms.projectemployee.CreateProjectEmployeeDTO;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
+
+
 import java.util.List;
 
 @Service
@@ -56,7 +59,12 @@ public class ProjectService {
         return mapper.toDTO(project);
     }
 
-
+    @Transactional
+    public void deleteById(Long id){
+        Project project = repository.findById(id)
+                .orElseThrow(()->new ProjectNotFoundException(id));
+        repository.delete(project);
+    }
 
     @Transactional(readOnly = true)
     public List<ProjectDTO> findAll() {

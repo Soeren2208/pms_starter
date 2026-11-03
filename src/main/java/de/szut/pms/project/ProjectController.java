@@ -1,13 +1,15 @@
 package de.szut.pms.project;
 
-import io.swagger.v3.oas.annotations.media.Content;
+
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import org.springframework.web.bind.annotation.GetMapping;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
@@ -113,5 +115,15 @@ public class ProjectController {
     @GetMapping
     public ResponseEntity<List<ProjectDTO>> findAll() {
         return ResponseEntity.ok(service.findAll());
+    }
+
+    @Operation(summary = "Delete a project")
+    @ApiResponse(responseCode = "204", description = "Project successfully deleted")
+    @ApiResponse(responseCode = "404", description = "Project not found")
+    @ApiResponse(responseCode = "401", description = "Invalid JWT")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteById(@PathVariable Long id){
+        service.deleteById(id);
+        return ResponseEntity.noContent().build(); //mit .ok() würde 200 returnt
     }
 }
