@@ -1,13 +1,13 @@
 package de.szut.pms.project;
 
-import de.szut.pms.common.ResourceNotFoundException;
 import de.szut.pms.customer.CustomerClient;
 import de.szut.pms.customer.CustomerNotFoundException;
 import de.szut.pms.employee.EmployeeQualificationService;
 import de.szut.pms.projectemployee.CreateProjectEmployeeDTO;
+import de.szut.pms.projectemployee.ProjectEmployee;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
-
+import de.szut.pms.projectemployee.ProjectEmployeeNotFoundException;
 
 import java.util.List;
 
@@ -72,6 +72,29 @@ public class ProjectService {
                 .map(mapper::toDTO)
                 .toList();
     }
+
+
+    @Transactional
+    public ProjectEmployeeRemoveDTO removeEmployee(Long projectId, Long employeeId){
+        Project project = repository.findById(projectId)
+                .orElseThrow(()->new ProjectNotFoundException(projectId));
+
+        ProjectEmployee deleteEmployee = null;
+        for(ProjectEmployee employee: project.getEmployee()){
+            if(employeeId.equals(employee.getEmployeeId())){
+                deleteEmployee = employee;
+                break;
+            }
+        }
+        if(deleteEmployee != null){
+            project.getEmployee().remove(deleteEmployee);
+        }else{
+            throw new ProjectEmployeeNotFoundException(projectId, employeeId);
+        }
+        repository.save(project);
+        return mapper.toRemoveEmployeeDTO(project);
+    }
+
 
     @Transactional
     public ProjectEmployeesDTO findAllEmployeesOfProjectOneByID(Long id) {
