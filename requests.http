@@ -72,3 +72,9 @@ Authorization: Bearer {{token}}
 ### Alle Mitarbeiter im Employee-Service
 GET http://localhost:8089/employees
 Authorization: Bearer {{token}}
+
+
+### Alle Projekte eines Mitarbeiters abrufen
+@employeeId = 1
+GET http://localhost:8080/employees/{{employeeId}}/projects
+Authorization: Bearer {{token}}
