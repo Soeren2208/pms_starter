@@ -233,6 +233,13 @@ public class ProjectService {
         List<SkillDto> allQualifications = externalApiClient.getAllQualifications();
         List<EmployeeProjectsDetailsDto> projectDetailsList = new ArrayList<>();
 
+// Prüft ob ID überhaupt existiert
+        try {
+            externalApiClient.getEmployeeById(employeeId);
+        } catch (Exception e) {
+            throw new EmployeeNotFoundException(employeeId);
+        }
+
         for (ProjectEmployee assignment : assignments) {
             Project project = assignment.getProject();
             Long qualId = assignment.getQualificationID();
