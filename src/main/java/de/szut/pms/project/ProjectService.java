@@ -271,6 +271,13 @@ public class ProjectService {
             throw new ProjectNotFoundException(projectId);
         }
 
+        // Check if employee exists
+        try {
+            externalApiClient.getEmployeeById(employeeId);
+        } catch (Exception e) {
+            throw new EmployeeNotFoundException(employeeId);
+        }
+
         // Find employee assignment
         ProjectEmployee assignment =
                 projectEmployeeRepository
