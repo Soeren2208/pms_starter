@@ -1,7 +1,5 @@
-package de.szut.pms.IntegrationsTests;
+package de.szut.pms.project;
 
-import de.szut.pms.project.Project;
-import de.szut.pms.project.ProjectRepository;
 import de.szut.pms.projectemployee.ProjectEmployee;
 import de.szut.pms.testcontainers.AbstractIntegrationTest;
 import org.junit.jupiter.api.AfterEach;
