@@ -70,9 +70,9 @@ public class ProjectService {
     }
 
     @Transactional(readOnly = true)
-    public List<ProjectDTO> findAll() {
+    public List<ProjectOverviewDTO> findAll() {
         return repository.findAll().stream()
-                .map(mapper::toDTO)
+                .map(mapper::toOverviewDTO)
                 .toList();
     }
 
