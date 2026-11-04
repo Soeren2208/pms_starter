@@ -48,7 +48,6 @@ public class ProjectService {
             throw new EmployeeNotFoundException(dto.projectLeadId());
         }
 
-
         // prüft ob IDs (falls angegeben) gültig sind
         List<SkillDto> qualifications =
                 externalApiClient.getAllQualifications();
