@@ -23,6 +23,12 @@ public class ProjectController {
         this.projectRepository = projectRepository;
     }
 
+    /**
+     * Creates a new project.
+     *
+     * @param dto project data including lead, customer and optional employees
+     * @return the created project
+     */
     @PostMapping
     public ResponseEntity<ProjectDto> createProject(@Valid @RequestBody CreateProjectDto dto){
         ProjectDto created = service.create(dto);
@@ -35,6 +41,13 @@ public class ProjectController {
         return ResponseEntity.created(location).body(created);
     }
 
+    /**
+     * Adds an employee to an existing project.
+     *
+     * @param projectId identifier of the project
+     * @param dto employee assignment data including qualification
+     * @return the created project employee assignment
+     */
     @PostMapping("/{projectId}/employees")
     public ResponseEntity<ProjectEmployeeDto> addEmployeeToProject(
             @PathVariable Long projectId,
@@ -52,6 +65,11 @@ public class ProjectController {
         return ResponseEntity.created(location).body(created);
     }
 
+    /**
+     * Retrieves all projects.
+     *
+     * @return a list of all available projects
+     */
     @GetMapping
     public ResponseEntity<List<ProjectDto>> getAll() {
         return ResponseEntity.ok(service.findAll());

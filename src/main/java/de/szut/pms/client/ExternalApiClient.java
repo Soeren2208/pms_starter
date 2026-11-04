@@ -6,6 +6,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
+/**
+ * Client for communicating with the Employee Service.
+ * Provides methods for retrieving employees and qualifications
+ * while forwarding the current user's JWT token.
+ */
 
 
 @Component
@@ -34,7 +39,12 @@ public class ExternalApiClient {
                 .bodyToMono(String.class)
                 .block();
     }*/
-
+    /**
+     * Retrieves an employee by its identifier.
+     *
+     * @param id identifier of the employee
+     * @return the requested employee
+     */
     public EmployeeDto getEmployeeById(Long id) {
         return webClient.get()
                 .uri("/employees/{id}", id)
@@ -44,6 +54,13 @@ public class ExternalApiClient {
                 .block();
     }
 
+    /**
+     * Retrieves a qualification of an employee.
+     *
+     * @param employeeId identifier of the employee
+     * @param qualificationId identifier of the qualification
+     * @return the requested qualification
+     */
     public String getQualification(Long employeeId, Long qualificationId) {
         return webClient.get()
                 .uri("/employees/{id}/qualifications/{qid}", employeeId, qualificationId)
@@ -53,12 +70,17 @@ public class ExternalApiClient {
                 .block();
     }
 
-    public List<QualificationDto> getAllQualifications() {
+    /**
+     * Retrieves all available qualifications.
+     *
+     * @return list of all qualifications
+     */
+    public List<SkillDto> getAllQualifications() {
         return webClient.get()
                 .uri("/qualifications")
                 .headers(h -> h.setBearerAuth(getCurrentToken()))
                 .retrieve()
-                .bodyToFlux(QualificationDto.class)
+                .bodyToFlux(SkillDto.class)
                 .collectList()
                 .block();
     }
