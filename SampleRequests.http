@@ -48,20 +48,3 @@ GET http://localhost:8080/projects/1
 Authorization: Bearer {{bearer_token}}
 Accept: application/json
 
-
-
-
-//==========HELLO=======================================
-
-### Alle Einträge abrufen
-GET http://localhost:8080/hello
-Authorization: Bearer {{bearer_token}}
-
-### Nach Nachricht suchen
-GET http://localhost:8080/hello/findByMessage?message=Hallo Welt!
-Authorization: Bearer {{bearer_token}}
-
-### Einen Eintrag löschen
-DELETE http://localhost:8080/hello/1
-Authorization: Bearer {{bearer_token}}
-

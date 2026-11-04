@@ -50,7 +50,7 @@ public class ProjectService {
 
 
         // prüft ob IDs (falls angegeben) gültig sind
-        List<QualificationDto> qualifications =
+        List<SkillDto> qualifications =
                 externalApiClient.getAllQualifications();
 
         if (dto.employees() != null) {
@@ -163,7 +163,7 @@ public class ProjectService {
         }
 
         // prüft ob valide Qualifikations ID
-        List<QualificationDto> qualifications =
+        List<SkillDto> qualifications =
                 externalApiClient.getAllQualifications();
 
         boolean qualificationExists = qualifications.stream()
@@ -231,7 +231,7 @@ public class ProjectService {
 
     public EmployeeProjectsDto getProjectsByEmployeeId(Long employeeId) {
         List<ProjectEmployee> assignments = projectEmployeeRepository.findByEmployeeId(employeeId);
-        List<QualificationDto> allQualifications = externalApiClient.getAllQualifications();
+        List<SkillDto> allQualifications = externalApiClient.getAllQualifications();
         List<EmployeeProjectsDetailsDto> projectDetailsList = new ArrayList<>();
 
         for (ProjectEmployee assignment : assignments) {
@@ -240,7 +240,7 @@ public class ProjectService {
 
             String qualName = allQualifications.stream()
                     .filter(q -> q.id().equals(qualId))
-                    .map(QualificationDto::skill)
+                    .map(SkillDto::skill)
                     .findFirst()
                     .orElse("Unbekannte Qualifikation");
 
