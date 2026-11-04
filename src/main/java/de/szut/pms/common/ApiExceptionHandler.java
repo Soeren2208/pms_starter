@@ -100,6 +100,20 @@ public class ApiExceptionHandler {
 
         return problem;
     }
+
+    @ExceptionHandler(ProjectEmployeeNotFoundException.class)
+    public ProblemDetail handleProjectEmployeeNotFound(
+            ProjectEmployeeNotFoundException ex) {
+
+        ProblemDetail problem =
+                ProblemDetail.forStatusAndDetail(
+                        HttpStatus.NOT_FOUND,
+                        ex.getMessage()
+                );
+
+        problem.setTitle("Mitarbeiter*in ist diesem Projekt nicht zugeordnet.");
+        return problem;
+    }
 }
 /*
     @ExceptionHandler(HelloNotFoundException.class)
