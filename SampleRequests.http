@@ -48,19 +48,3 @@ GET http://localhost:8080/projects/1
 Authorization: Bearer {{bearer_token}}
 Accept: application/json
 
-### Einen Mitarbeiter aus einem Projekt entfernen
-DELETE http://localhost:8080/projects/1/employees/1
-Authorization: Bearer {{bearer_token}}
-
-
-
-//==========HELLO=======================================
-
-### Alle Einträge abrufen
-GET http://localhost:8080/hello
-Authorization: Bearer {{bearer_token}}
-
-### Nach Nachricht suchen
-GET http://localhost:8080/hello/findByMessage?message=Hallo Welt!
-Authorization: Bearer {{bearer_token}}
-

@@ -1,5 +1,6 @@
 package de.szut.pms.testcontainers;
 
+import de.szut.pms.project.ProjectRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
@@ -7,7 +8,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
-import de.szut.pms.hello.HelloRepository;
 
 /**
  * Startet einen echten Postgres-Container über Testcontainers und die volle
@@ -21,12 +21,11 @@ public class AbstractIntegrationTest {
 
     @Autowired
     protected MockMvc mockMvc;
-
     @Autowired
-    protected HelloRepository helloRepository;
+    protected ProjectRepository projectRepository;
 
     @BeforeEach
     void setUp() {
-        helloRepository.deleteAll();
+        projectRepository.deleteAll();
     }
 }

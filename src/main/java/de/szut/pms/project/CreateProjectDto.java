@@ -10,6 +10,18 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Request payload for creating a new project.
+ *
+ * @param projectName name of the project
+ * @param startDate planned start date of the project
+ * @param endDate planned end date of the project
+ * @param projectLeadId identifier of the project lead
+ * @param customerId identifier of the customer
+ * @param description optional description of the project
+ * @param employees optional list of employees assigned during project creation,
+ *                  including their qualifications
+ */
 public record CreateProjectDto(
         @NotBlank(message = "Der Projektname darf nicht leer sein!")
         String projectName,
