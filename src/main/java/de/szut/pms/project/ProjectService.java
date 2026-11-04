@@ -256,6 +256,7 @@ public class ProjectService {
 
         return new EmployeeProjectsDto(employeeId, projectDetailsList);
     }
+
     @Transactional
     public void removeEmployeeFromProject(Long projectId, Long employeeId) {
 

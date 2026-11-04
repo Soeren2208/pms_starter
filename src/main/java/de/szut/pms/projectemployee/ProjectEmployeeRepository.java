@@ -4,6 +4,7 @@ import de.szut.pms.project.Project;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 
 public interface ProjectEmployeeRepository extends JpaRepository<ProjectEmployee, Long> {
@@ -12,7 +13,10 @@ public interface ProjectEmployeeRepository extends JpaRepository<ProjectEmployee
 
     List<ProjectEmployee> findByProjectId(Long projectId);
 
-    long countByProjectId(Long projectId);
+    Optional<ProjectEmployee> findByProjectIdAndEmployeeId(
+            Long projectId,
+            Long employeeId
+    );
 
     boolean existsByProjectIdAndEmployeeId(Long projectId, Long employeeId);
 
