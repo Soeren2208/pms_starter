@@ -131,7 +131,7 @@ public class ProjectController {
                     schema = @Schema(implementation = ProblemDetail.class),
                     examples = @ExampleObject(value = """
                         {
-                          "detail": "There is no project with the ID 99.",
+                          "detail": "There is no project entry with the ID 99.",
                           "instance": "/projects/99/employees",
                           "status": 404,
                           "title": "Not Found"
@@ -188,7 +188,7 @@ public class ProjectController {
                     schema = @Schema(implementation = ProblemDetail.class),
                     examples = @ExampleObject(value = """
                         {
-                          "detail": "There is no project with the ID 99.",
+                          "detail": "There is no project entry with the ID 99.",
                           "instance": "/projects/99",
                           "status": 404,
                           "title": "Not Found"
@@ -249,7 +249,7 @@ public class ProjectController {
                     schema = @Schema(implementation = ProblemDetail.class),
                     examples = @ExampleObject(value = """
                         {
-                          "detail": "There is no project with the ID 99.",
+                          "detail": "There is no project entry with the ID 99.",
                           "instance": "/projects/99",
                           "status": 404,
                           "title": "Not Found"
