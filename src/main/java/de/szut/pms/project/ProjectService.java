@@ -257,5 +257,29 @@ public class ProjectService {
         return new EmployeeProjectsDto(employeeId, projectDetailsList);
     }
 
+    @Transactional
+    public void removeEmployeeFromProject(Long projectId, Long employeeId) {
 
+        // Check if project exists
+        if (!projectRepository.existsById(projectId)) {
+            throw new ProjectNotFoundException(projectId);
+        }
+
+        // Check if employee exists
+        try {
+            externalApiClient.getEmployeeById(employeeId);
+        } catch (Exception e) {
+            throw new EmployeeNotFoundException(employeeId);
+        }
+
+        // Find employee assignment
+        ProjectEmployee assignment =
+                projectEmployeeRepository
+                        .findByProjectIdAndEmployeeId(projectId, employeeId)
+                        .orElseThrow(() ->
+                                new ProjectEmployeeNotFoundException(projectId, employeeId));
+
+        // Delete assignment
+        projectEmployeeRepository.delete(assignment);
+    }
 }
