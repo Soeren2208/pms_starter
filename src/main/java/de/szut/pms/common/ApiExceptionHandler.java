@@ -32,7 +32,7 @@ public class ApiExceptionHandler {
     public ProblemDetail handleNotFound(HelloNotFoundException ex) {
         ProblemDetail problem =
                 ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
-        problem.setTitle("Nicht gefunden");
+        problem.setTitle("Not found");
         return problem;
     }
 
@@ -40,7 +40,7 @@ public class ApiExceptionHandler {
     public ProblemDetail handleNotFound(ResourceNotFoundException ex) {
         ProblemDetail problem =
                 ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
-        problem.setTitle("Nicht gefunden");
+        problem.setTitle("Not found");
         return problem;
     }
 
@@ -51,8 +51,8 @@ public class ApiExceptionHandler {
                 error -> errors.put(error.getField(), error.getDefaultMessage()));
 
         ProblemDetail problem = ProblemDetail.forStatusAndDetail(
-                HttpStatus.BAD_REQUEST, "Die Anfrage enthält ungültige Felder.");
-        problem.setTitle("Ungültige Eingabe");
+                HttpStatus.BAD_REQUEST, "The request contains invalid fields");
+        problem.setTitle("Invalid input");
         problem.setProperty("errors", errors);
         return problem;
     }
@@ -60,7 +60,7 @@ public class ApiExceptionHandler {
     @ExceptionHandler(ProjectNotFoundException.class)
     public ProblemDetail handleProjectNotFound(ProjectNotFoundException ex) {
         ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
-        problem.setTitle("Projekt nicht gefunden");
+        problem.setTitle("projekt not found");
         return problem;
     }
 
@@ -69,7 +69,7 @@ public class ApiExceptionHandler {
     public ProblemDetail handleQualificationMissing(QualificationMissingException ex) {
         ProblemDetail problem = ProblemDetail.forStatusAndDetail(
                 HttpStatus.CONFLICT, ex.getMessage());
-        problem.setTitle("Nicht vorhandene Qualifikation");
+        problem.setTitle("Lack of Qualifications");
         return problem;
     }
 
@@ -77,7 +77,7 @@ public class ApiExceptionHandler {
     public ProblemDetail handleEmployeeServiceNotAvailable(EmployeeServiceNotAvailableException ex) {
         ProblemDetail problem = ProblemDetail.forStatusAndDetail(
                 HttpStatus.SERVICE_UNAVAILABLE, ex.getMessage());
-        problem.setTitle("Employee Service nicht erreichbar");
+        problem.setTitle("Employee Service is unavailable");
         return problem;
     }
 }

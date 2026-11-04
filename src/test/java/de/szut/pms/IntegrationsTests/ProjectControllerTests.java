@@ -27,7 +27,7 @@ public class ProjectControllerTests extends AbstractIntegrationTest {
         project.setResponsibleEmployeeId(1L);
         project.setCustomerId(1L);
         project.setCustomerServiceRepresentative("Maxi Heinz");
-        project.setComment("Testprojekt");
+        project.setComment("Test project");
         project.setStartDate(LocalDate.of(2026, 1, 1));
         project.setEndDate(LocalDate.of(2026, 12, 31));
         return projectRepository.save(project);
@@ -38,7 +38,7 @@ public class ProjectControllerTests extends AbstractIntegrationTest {
     @Test
     @WithMockUser
     void getByIdWithIdReturnsOk() throws Exception {
-        Project saved = saveProject("Neues Projekt");
+        Project saved = saveProject("new project");
         mockMvc.perform(get("/projects/" + saved.getId()))
                 .andExpect(status().is(200));
     }
