@@ -4,8 +4,12 @@ import de.szut.pms.client.EmployeeProjectsDto;
 import de.szut.pms.projectemployee.CreateProjectEmployeeDto;
 import de.szut.pms.projectemployee.ProjectEmployeeDto;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
@@ -93,5 +97,37 @@ public class ProjectController {
 
         EmployeeProjectsDto response = service.getProjectsByEmployeeId(employeeId);
         return ResponseEntity.ok(response);
+    }
+
+    //löscht einen ProjectEmployee Eintrag, der einen MA mit einem Projekt verknüpft
+    @DeleteMapping("/{projectId}/employees/{employeeId}")
+    @Operation(
+            summary = "Remove an employee from a project",
+            description = """
+        Removes the assignment between an employee and a project.
+
+        Both the project and the employee must exist.
+        The employee must currently be assigned to the specified project.
+
+        This operation only deletes the project-employee association.
+        The project and employee themselves remain unchanged.
+        """
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "204",
+                    description = "Employee successfully removed from project."
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Project, employee or project-employee assignment not found.",
+                    content = @Content(
+                            schema = @Schema(implementation = ProblemDetail.class)
+                    )
+            )
+    })
+    public ResponseEntity<Void> removeEmployeeFromProject(@PathVariable Long projectId, @PathVariable Long employeeId){
+        service.removeEmployeeFromProject(projectId, employeeId);
+        return ResponseEntity.noContent().build();
     }
 }
