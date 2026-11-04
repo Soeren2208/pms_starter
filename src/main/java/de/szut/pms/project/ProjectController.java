@@ -94,5 +94,4 @@ public class ProjectController {
         EmployeeProjectsDto response = service.getProjectsByEmployeeId(employeeId);
         return ResponseEntity.ok(response);
     }
-
 }
