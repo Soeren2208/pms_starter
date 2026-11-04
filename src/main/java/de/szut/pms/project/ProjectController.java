@@ -1,22 +1,18 @@
 package de.szut.pms.project;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
+import org.springframework.http.ProblemDetail;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
-import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/projects")
@@ -27,7 +23,6 @@ public class ProjectController {
     public ProjectController(ProjectService service) {
         this.service = service;
     }
-
 
     @Operation(summary = "Lege ein neues Projekt an")
     @ApiResponse(
@@ -67,17 +62,18 @@ public class ProjectController {
             description = "Der Rumpf war fehlerhaft",
             content = @Content(
                     mediaType = "application/problem+json",
+                    schema = @Schema(implementation = ProblemDetail.class),
                     examples = @ExampleObject(value = """
-            {
-              "detail": "Die Anfrage enthält ungültige Felder.",
-              "instance": "/projects",
-              "status": 400,
-              "title": "Ungültige Eingabe",
-              "errors": {
-                "startDate": "Das Startdatum muss angegeben werden."
-              }
-            }
-            """)
+                        {
+                          "detail": "Die Anfrage enthält ungültige Felder.",
+                          "instance": "/projects",
+                          "status": 400,
+                          "title": "Ungültige Eingabe",
+                          "errors": {
+                            "startDate": "Das Startdatum muss angegeben werden."
+                          }
+                        }
+                        """)
             )
     )
     @PostMapping
@@ -91,49 +87,221 @@ public class ProjectController {
         return ResponseEntity.created(location).body(created);
     }
 
-    @ApiResponse(responseCode = "200", description = "Gesuchtes Projekt mit Mitarbeiter erhalten")
-    @ApiResponse(responseCode = "400", description = "Fehler in der Anfrage, möglich das die ID keine Zahl ist",content = @Content(mediaType = "application/problem+json"))
-    @ApiResponse(responseCode = "404", description = "Projekt nicht gefunden",content = @Content(mediaType = "application/problem+json"))
+    @Operation(summary = "Erhalte eine Liste aller Mitarbeiter eines Projektes")
+    @ApiResponse(
+            responseCode = "200",
+            description = "Gesuchtes Projekt mit Mitarbeiter erhalten",
+            content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = ProjectEmployeesDTO.class),
+                    examples = @ExampleObject(value = """
+                        {
+                          "projectId": 1,
+                          "description": "Website-Relaunch",
+                          "employees": [
+                            {
+                              "id": 1,
+                              "employeeId": 1,
+                              "qualificationID": 1
+                            },
+                            {
+                              "id": 2,
+                              "employeeId": 2,
+                              "qualificationID": 2
+                            }
+                          ]
+                        }
+                        """)
+            )
+    )
+    @ApiResponse(
+            responseCode = "400",
+            description = "Fehler in der Anfrage, möglich das die ID keine Zahl ist",
+            content = @Content(
+                    mediaType = "application/problem+json",
+                    schema = @Schema(implementation = ProblemDetail.class)
+            )
+    )
+    @ApiResponse(
+            responseCode = "404",
+            description = "Projekt nicht gefunden",
+            content = @Content(
+                    mediaType = "application/problem+json",
+                    schema = @Schema(implementation = ProblemDetail.class),
+                    examples = @ExampleObject(value = """
+                        {
+                          "detail": "Es gibt keinen Projekteintrag mit der Kennung 99.",
+                          "instance": "/projects/99/employees",
+                          "status": 404,
+                          "title": "Nicht gefunden"
+                        }
+                        """)
+            )
+    )
     @GetMapping(value = "{id}/employees", produces = "application/json")
-    public ResponseEntity<ProjectEmployeesDTO> getEmployessFromProject(@PathVariable Long id){
+    public ResponseEntity<ProjectEmployeesDTO> getEmployeesFromProject(@PathVariable Long id) {
         return ResponseEntity.ok().body(service.findAllEmployeesOfProjectOneByID(id));
     }
 
-    @ApiResponse(responseCode = "200", description = "Gesuchtes Projekt erhalten")
-    @ApiResponse(responseCode = "400", description = "Fehler in der Anfrage, möglich das die ID keine Zahl ist",content = @Content(mediaType = "application/problem+json"))
-    @ApiResponse(responseCode = "404", description = "Projekt nicht gefunden",content = @Content(mediaType = "application/problem+json"))
+    @Operation(summary = "Erhalte ein Projekt für eine bestimmte ID")
+    @ApiResponse(
+            responseCode = "200",
+            description = "Gesuchtes Projekt erhalten",
+            content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = ProjectDTO.class),
+                    examples = @ExampleObject(value = """
+                        {
+                          "id": 1,
+                          "description": "Website-Relaunch",
+                          "responsibleEmployeeId": 1,
+                          "customerId": 5,
+                          "customerServiceRepresentative": "Anna Müller",
+                          "comment": "Neuer Webauftritt",
+                          "startDate": "2026-11-01",
+                          "endDate": "2027-02-28",
+                          "projectEmployees": [
+                            {
+                              "id": 1,
+                              "employeeId": 1,
+                              "qualificationID": 1
+                            }
+                          ]
+                        }
+                        """)
+            )
+    )
+    @ApiResponse(
+            responseCode = "400",
+            description = "Fehler in der Anfrage, möglich das die ID keine Zahl ist",
+            content = @Content(
+                    mediaType = "application/problem+json",
+                    schema = @Schema(implementation = ProblemDetail.class)
+            )
+    )
+    @ApiResponse(
+            responseCode = "404",
+            description = "Projekt nicht gefunden",
+            content = @Content(
+                    mediaType = "application/problem+json",
+                    schema = @Schema(implementation = ProblemDetail.class),
+                    examples = @ExampleObject(value = """
+                        {
+                          "detail": "Es gibt keinen Projekteintrag mit der Kennung 99.",
+                          "instance": "/projects/99",
+                          "status": 404,
+                          "title": "Nicht gefunden"
+                        }
+                        """)
+            )
+    )
     @GetMapping(value = "{id}", produces = "application/json")
-    public ResponseEntity<ProjectDTO> getProject(@PathVariable Long id){
+    public ResponseEntity<ProjectDTO> getProject(@PathVariable Long id) {
         return ResponseEntity.ok().body(service.findOneByID(id));
     }
 
-
     @Operation(summary = "Erhalte eine Liste aller Projekte")
-    @ApiResponse(responseCode = "200", description = "Projekte erfolgreich abgerufen")
-    @ApiResponse(responseCode = "500", description = "Interner Serverfehler")
+    @ApiResponse(
+            responseCode = "200",
+            description = "Projekte erfolgreich abgerufen",
+            content = @Content(
+                    mediaType = "application/json",
+                    array = @ArraySchema(schema = @Schema(implementation = ProjectOverviewDTO.class)),
+                    examples = @ExampleObject(value = """
+                        [
+                          {
+                            "id": 1,
+                            "description": "Website-Relaunch",
+                            "responsibleEmployeeId": 1,
+                            "customerId": 5,
+                            "customerServiceRepresentative": "Anna Müller",
+                            "comment": "Neuer Webauftritt",
+                            "startDate": "2026-11-01",
+                            "endDate": "2027-02-28"
+                          },
+                          {
+                            "id": 2,
+                            "description": "CRM-Migration",
+                            "responsibleEmployeeId": 3,
+                            "customerId": 7,
+                            "customerServiceRepresentative": "Jonas Becker",
+                            "comment": "Umzug auf neues CRM",
+                            "startDate": "2027-01-15",
+                            "endDate": "2027-06-30"
+                          }
+                        ]
+                        """)
+            )
+    )
     @GetMapping
     public ResponseEntity<List<ProjectOverviewDTO>> findAll() {
         return ResponseEntity.ok(service.findAll());
     }
 
-    @Operation(summary = "Delete a project")
-    @ApiResponse(responseCode = "204", description = "Project successfully deleted")
-    @ApiResponse(responseCode = "404", description = "Project not found")
-    @ApiResponse(responseCode = "401", description = "Invalid JWT")
+    @Operation(summary = "Ein Projekt löschen")
+    @ApiResponse(responseCode = "204", description = "Projekt erfolgreich gelöscht", content = @Content)
+    @ApiResponse(
+            responseCode = "404",
+            description = "Projekt nicht gefunden",
+            content = @Content(
+                    mediaType = "application/problem+json",
+                    schema = @Schema(implementation = ProblemDetail.class),
+                    examples = @ExampleObject(value = """
+                        {
+                          "detail": "Es gibt keinen Projekteintrag mit der Kennung 99.",
+                          "instance": "/projects/99",
+                          "status": 404,
+                          "title": "Nicht gefunden"
+                        }
+                        """)
+            )
+    )
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteById(@PathVariable Long id){
+    public ResponseEntity<Void> deleteById(@PathVariable Long id) {
         service.deleteById(id);
         return ResponseEntity.noContent().build(); //mit .ok() würde 200 returnt
     }
 
-    @Operation(summary = "Remove an employee from project")
-    @ApiResponse(responseCode = "200", description = "Employee successfully removed")
-    @ApiResponse(responseCode = "404", description = "Projekt(Id) existiert nicht oder Mitarbeiter ist dem Projekt nicht zugeordnet")
-//  @ApiResponse(responseCode = "404", description = "Projekt(Id) existiert nicht")
-//  @ApiResponse(responseCode = "404", description = "Mitarbeiter ist dem Projekt nicht zugeordnet")
-    @ApiResponse(responseCode = "401", description = "Invalider JWT")
+    @Operation(summary = "Einen Mitarbeiter aus dem Projekt entfernen")
+    @ApiResponse(
+            responseCode = "200",
+            description = "Mitarbeiter erfolgreich entfernt",
+            content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = ProjectEmployeeRemoveDTO.class),
+                    examples = @ExampleObject(value = """
+                        {
+                          "id": 1,
+                          "description": "Website-Relaunch",
+                          "projectEmployees": [
+                            {
+                              "id": 1,
+                              "employeeId": 1,
+                              "qualificationID": 1
+                            }
+                          ]
+                        }
+                        """)
+            )
+    )
+    @ApiResponse(
+            responseCode = "404",
+            description = "Das Projekt (ID) existiert nicht oder der Mitarbeiter ist dem Projekt nicht zugeordnet.",
+            content = @Content(
+                    mediaType = "application/problem+json",
+                    schema = @Schema(implementation = ProblemDetail.class),
+                    examples = @ExampleObject(value = """
+                        {
+                          "detail": "In dem Projekt mit der Id 1 existiert kein Mitarbeiter mit der Id 2",
+                          "instance": "/projects/1/employees/2",
+                          "status": 404,
+                          "title": "Nicht gefunden"
+                        }
+                        """)
+            )
+    )
     @DeleteMapping("/{projectId}/employees/{employeeId}")
-    public ResponseEntity<ProjectEmployeeRemoveDTO> removeEmployee(@PathVariable Long projectId, @PathVariable Long employeeId){
+    public ResponseEntity<ProjectEmployeeRemoveDTO> removeEmployee(@PathVariable Long projectId, @PathVariable Long employeeId) {
         ProjectEmployeeRemoveDTO projectEmployeeRemoveDTO = service.removeEmployee(projectId, employeeId);
         return ResponseEntity.ok(projectEmployeeRemoveDTO);
     }
